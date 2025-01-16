@@ -88,15 +88,25 @@ const AdminView: React.FC = () => {
           onMouseUp={handleEnd}
           onTouchStart={handleStart}
           onTouchEnd={handleEnd}
+          className="non-draggable"
         >
           <ImageMapper
             src={image}
             map={map}
             onClick={() => handleAreaClick()}
             width={800}
-          />
+            // Prevent default dragging behavior using CSS
+            />
         </div>
       )}
+      {/* CSS to prevent dragging */}
+      <style>
+        {`
+          .non-draggable img {
+            pointer-events: none;
+          }
+        `}
+      </style>
     </div>
   );
 };
