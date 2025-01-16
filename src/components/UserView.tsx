@@ -1,4 +1,3 @@
-// UserView.tsx
 import React, { useRef, useState } from 'react';
 import { useAppContext } from './AppContext';
 import ImageMapper from 'react-img-mapper';
@@ -8,11 +7,16 @@ const UserView: React.FC = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [cameraOpen, setCameraOpen] = useState(false);
   const [selectedMapping, setSelectedMapping] = useState<number | null>(null);
+  const [isUsingFrontCamera, setIsUsingFrontCamera] = useState(false);
 
-  const openCamera = async (mappingId: number) => {
+  const openCamera = async (mappingId: number, frontCamera: boolean = false) => {
     setSelectedMapping(mappingId);
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: {
+          facingMode: frontCamera ? 'user' : 'environment', // Toggle front or back camera
+        },
+      });
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
         videoRef.current.play();
@@ -20,6 +24,19 @@ const UserView: React.FC = () => {
       setCameraOpen(true);
     } catch (err) {
       console.error('Failed to access camera:', err);
+    }
+  };
+
+  const switchCamera = async () => {
+    const tracks = (videoRef.current?.srcObject as MediaStream)?.getTracks();
+    tracks?.forEach((track) => track.stop()); // Stop current stream
+
+    // Toggle between front and back cameras
+    setIsUsingFrontCamera((prev) => !prev);
+
+    // Reopen the camera with the new setting
+    if (selectedMapping !== null) {
+      await openCamera(selectedMapping, !isUsingFrontCamera);
     }
   };
 
@@ -73,7 +90,12 @@ const UserView: React.FC = () => {
       {cameraOpen && (
         <div>
           <video ref={videoRef} style={{ width: '100%' }} />
-          <button onClick={capturePhoto}>Capture Photo</button>
+          <div>
+            <button onClick={capturePhoto}>Capture Photo</button>
+            <button onClick={switchCamera}>
+              Switch to {isUsingFrontCamera ? 'Back' : 'Front'} Camera
+            </button>
+          </div>
         </div>
       )}
       <h2>Photo Associations</h2>
