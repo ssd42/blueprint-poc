@@ -45,7 +45,7 @@ const AdminView: React.FC = () => {
     setCurrentCoords({ x, y });
   };
 
-  const handleEnd = (e: PointerEvent) => {
+  const handleEnd = () => {
     if (!isDrawing || !startCoords || !currentCoords) return;
 
     const normalizedCoords: [number, number, number, number] = [
@@ -138,7 +138,7 @@ const AdminView: React.FC = () => {
             map={map}
             onClick={handleAreaClick}
             width={800}
-            onMouseEnter={(area) => setHoveredId(area.id)}
+            onMouseEnter={(area) => setHoveredId(area.id ?? null)}
             onMouseLeave={() => setHoveredId(null)}
           />
         </div>
