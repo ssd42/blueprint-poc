@@ -1,63 +1,78 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { useAppContext } from './AppContext';
 import blueprint1 from '../assets/blueprint1.png';
 import ImageMapper from 'react-img-mapper';
 
 type Mapping = {
   id: number;
-  shape: "rect";
+  shape: 'rect';
   coords: [number, number, number, number];
   title: string;
 };
+
+type PointerEvent = React.TouchEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>;
 
 const AdminView: React.FC = () => {
   const { image, setImage, mappings, setMappings } = useAppContext();
   const [isDrawing, setIsDrawing] = useState(false);
   const [startCoords, setStartCoords] = useState<{ x: number; y: number } | null>(null);
+  const [currentCoords, setCurrentCoords] = useState<{ x: number; y: number } | null>(null);
+  const [hoveredId, setHoveredId] = useState<string | null>(null);
+  const [isImageLoaded, setIsImageLoaded] = useState(false);
 
-  const handleImageSelection = () => {
-    setImage(blueprint1); // Set the blueprint image.
+  const handleImageSelection = useCallback(() => {
+    setImage(blueprint1);
+    setIsImageLoaded(true);
+  }, [setImage]);
+
+  const getLocalCoords = (e: React.TouchEvent | React.MouseEvent, rect: DOMRect) => {
+    const point = 'touches' in e ? e.touches[0] : e;
+    return { x: point.clientX - rect.left, y: point.clientY - rect.top };
   };
 
-  const getTouchCoordinates = (e: React.TouchEvent | React.MouseEvent, rect: DOMRect) => {
-    if ("touches" in e) {
-      const touch = e.touches[0];
-      return { x: touch.clientX - rect.left, y: touch.clientY - rect.top };
-    } else {
-      return { x: e.clientX - rect.left, y: e.clientY - rect.top };
-    }
-  };
-
-  const handleStart = (e: React.TouchEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>) => {
-    const rect = (e.currentTarget as HTMLDivElement).getBoundingClientRect();
-    const { x, y } = getTouchCoordinates(e, rect);
+  const handleStart = (e: PointerEvent) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const { x, y } = getLocalCoords(e, rect);
     setStartCoords({ x, y });
+    setCurrentCoords({ x, y });
     setIsDrawing(true);
   };
 
-  const handleEnd = (e: React.TouchEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>) => {
+  const handleMove = (e: PointerEvent) => {
     if (!isDrawing || !startCoords) return;
+    const rect = e.currentTarget.getBoundingClientRect();
+    const { x, y } = getLocalCoords(e, rect);
+    setCurrentCoords({ x, y });
+  };
 
-    const rect = (e.currentTarget as HTMLDivElement).getBoundingClientRect();
-    const { x, y } = getTouchCoordinates(e, rect);
+  const handleEnd = (e: PointerEvent) => {
+    if (!isDrawing || !startCoords || !currentCoords) return;
+
+    const normalizedCoords: [number, number, number, number] = [
+      Math.min(startCoords.x, currentCoords.x),
+      Math.min(startCoords.y, currentCoords.y),
+      Math.max(startCoords.x, currentCoords.x),
+      Math.max(startCoords.y, currentCoords.y),
+    ];
 
     const newMapping: Mapping = {
       id: mappings.length + 1,
-      shape: "rect",
-      coords: [startCoords.x, startCoords.y, x, y] as [number, number, number, number],
+      shape: 'rect',
+      coords: normalizedCoords,
       title: `Mapping ${mappings.length + 1}`,
     };
 
     setMappings([...mappings, newMapping]);
     setIsDrawing(false);
     setStartCoords(null);
+    setCurrentCoords(null);
   };
 
-  const handleUndo = () => {
+  const handleUndo = useCallback(() => {
     if (mappings.length > 0) {
       setMappings(mappings.slice(0, -1));
     }
-  };
+  }, [mappings, setMappings]);
 
   const map = {
     name: 'image-map',
@@ -65,48 +80,69 @@ const AdminView: React.FC = () => {
       id: mapping.id.toString(),
       shape: mapping.shape,
       coords: mapping.coords,
-      preFillColor: 'rgba(255, 0, 0, 0.3)',
+      preFillColor:
+        hoveredId === mapping.id.toString()
+          ? 'rgba(255, 0, 0, 0.15)' // lighter on hover
+          : 'rgba(255, 0, 0, 0.3)', // default
       lineWidth: 2,
     })),
   };
 
-  const handleAreaClick = () => {
-    alert(`Clicked on area`);
-  };
+  const handleAreaClick = useCallback(() => {
+    alert('Clicked on area');
+  }, []);
 
   return (
     <div>
       <h1>Admin View</h1>
-      <button onClick={handleImageSelection}>Select Image</button>
-      <button onClick={handleUndo} disabled={mappings.length === 0} style={{ marginLeft: '10px' }}>
+      {!isImageLoaded && <button onClick={handleImageSelection}>Select Image</button>}
+      <button
+        onClick={handleUndo}
+        disabled={mappings.length === 0}
+        style={{ marginLeft: '10px' }}
+      >
         Undo
       </button>
+
       {image && (
         <div
+          className="mapper-wrapper"
           style={{ position: 'relative', display: 'inline-block', marginTop: '20px' }}
           onMouseDown={handleStart}
+          onMouseMove={handleMove}
           onMouseUp={handleEnd}
           onTouchStart={handleStart}
+          onTouchMove={handleMove}
           onTouchEnd={handleEnd}
-          className="non-draggable"
+          aria-label="Blueprint with clickable mapping areas"
         >
+          {/* Live preview rectangle while drawing */}
+          {isDrawing && startCoords && currentCoords && (
+            <div
+              style={{
+                position: 'absolute',
+                border: '2px dashed #ff0000',
+                backgroundColor: 'rgba(255,0,0,0.1)',
+                left: `${Math.min(startCoords.x, currentCoords.x)}px`,
+                top: `${Math.min(startCoords.y, currentCoords.y)}px`,
+                width: `${Math.abs(startCoords.x - currentCoords.x)}px`,
+                height: `${Math.abs(startCoords.y - currentCoords.y)}px`,
+                zIndex: 10,
+                pointerEvents: 'none',
+              }}
+            />
+          )}
+
           <ImageMapper
             src={image}
             map={map}
-            onClick={() => handleAreaClick()}
+            onClick={handleAreaClick}
             width={800}
-            // Prevent default dragging behavior using CSS
-            />
+            onMouseEnter={(area) => setHoveredId(area.id)}
+            onMouseLeave={() => setHoveredId(null)}
+          />
         </div>
       )}
-      {/* CSS to prevent dragging */}
-      <style>
-        {`
-          .non-draggable img {
-            pointer-events: none;
-          }
-        `}
-      </style>
     </div>
   );
 };
