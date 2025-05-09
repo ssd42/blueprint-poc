@@ -1,0 +1,1 @@
+// TODO create a view to handle all projects, allow creation of new ones and individuals who will be responsible for it.
