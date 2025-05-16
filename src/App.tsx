@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
 import { AppProvider } from './components/AppContext';
 import { ThemeProvider, useTheme } from './components/ThemeContext';
@@ -10,7 +10,7 @@ import ProjectsView from './components/ProjectsView';
 import ProjectDetailView from './components/ProjectDetailView';
 import Login from './components/Login';
 import favicon from './assets/favicon.png';
-import { FaUserShield, FaUser, FaClipboardList, FaSun, FaMoon, FaSignOutAlt } from 'react-icons/fa';
+import { FaAngleLeft, FaAngleRight, FaUserShield, FaUser, FaClipboardList, FaSun, FaMoon, FaSignOutAlt } from 'react-icons/fa';
 
 
 
@@ -19,11 +19,19 @@ const Sidebar: React.FC = () => {
   const { logout } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+  const [isCollapsed, setIsCollapsed] = useState(false);
 
   const currentPath = location.pathname;
 
   return (
-    <div className="sidebar">
+    <div className={`sidebar ${isCollapsed ? 'collapsed' : ''}`}>
+      <button 
+        className="collapse-button"
+        onClick={() => setIsCollapsed(!isCollapsed)}
+        title={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+      >
+        {isCollapsed ? <FaAngleRight /> : <FaAngleLeft />}
+      </button>
       <img
         src={favicon}
         alt="Landing"
