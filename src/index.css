@@ -97,7 +97,7 @@ button:focus-visible {
   height: 100vh;
   box-sizing: border-box;
   position: relative;
-  transition: width 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .sidebar.collapsed {
@@ -141,12 +141,6 @@ button:focus-visible {
   flex-direction: column;
   gap: 0.5rem;
   margin-top: 1rem;
-  transition: opacity 0.3s ease;
-}
-
-.sidebar.collapsed .sidebar-nav {
-  opacity: 0;
-  pointer-events: none;
 }
 
 .sidebar-nav button {
@@ -160,12 +154,16 @@ button:focus-visible {
   color: var(--sidebar-button-fg);
   cursor: pointer;
   box-sizing: border-box;
-  transition: background-color 0.2s ease, color 0.2s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
   align-items: center;
   gap: 0.5rem;
   white-space: nowrap;
   overflow: hidden;
+}
+
+.sidebar-nav button span {
+  transition: opacity 0.2s ease;
 }
 
 .sidebar.collapsed .sidebar-nav button {
@@ -174,13 +172,27 @@ button:focus-visible {
 }
 
 .sidebar.collapsed .sidebar-nav button span {
-  display: none;
+  opacity: 0;
+  width: 0;
+  margin: 0;
+}
+
+.favicon {
+  width: 150px;
+  height: 150px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .sidebar.collapsed .favicon {
   width: 40px;
   height: 40px;
   margin: 0 auto;
+}
+
+.theme-toggle,
+.logout-button {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .sidebar.collapsed .theme-toggle,
@@ -193,7 +205,9 @@ button:focus-visible {
 
 .sidebar.collapsed .theme-toggle span,
 .sidebar.collapsed .logout-button span {
-  display: none;
+  opacity: 0;
+  width: 0;
+  margin: 0;
 }
 
 .spacer {
@@ -262,12 +276,6 @@ button:focus-visible {
 }
 
 /* Favicon styles */
-.favicon {
-  width: 150px;
-  height: 150px;
-  cursor: pointer;
-  transition: filter 0.3s ease, transform 0.2s ease;
-}
 .favicon:hover {
   filter: brightness(1.2) saturate(1.1);
   transform: scale(1.05);
