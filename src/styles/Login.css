@@ -1,0 +1,111 @@
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: var(--background-color);
+}
+
+.login-logo {
+  display: block;
+  margin: 0 auto 1rem auto;
+  width: 56px;
+  height: 56px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  background: white;
+}
+
+.login-box {
+  background-color: var(--component-background, #fff);
+  padding: 2.5rem 2rem 2rem 2rem;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.10);
+  width: 100%;
+  max-width: 400px;
+  text-align: left;
+  position: relative;
+}
+
+.login-box h2 {
+  margin-bottom: 0.5rem;
+  text-align: center;
+  color: var(--primary-color, #1a237e);
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.login-subtitle {
+  text-align: center;
+  color: var(--text-color, #444);
+  margin-bottom: 2rem;
+  font-size: 1.05rem;
+  opacity: 0.85;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: var(--primary-color, #1a237e);
+}
+
+.form-group input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1.5px solid var(--border-color, #e0e0e0);
+  border-radius: 4px;
+  background-color: var(--input-background, #f5f7fa);
+  color: var(--text-color, #222);
+  font-size: 1rem;
+  transition: border 0.2s;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: var(--primary-color, #1a237e);
+  background: #fff;
+}
+
+.login-button {
+  width: 100%;
+  padding: 0.75rem;
+  background: linear-gradient(90deg, var(--primary-color, #1a237e) 60%, var(--primary-color-hover, #3949ab) 100%);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  margin-top: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 8px rgba(26,35,126,0.08);
+}
+
+.login-button:hover {
+  background-color: var(--primary-color-hover);
+}
+
+.login-button:active {
+  background: var(--primary-color-hover, #3949ab);
+}
+
+.error-message {
+  color: #dc3545;
+  background-color: #f8d7da;
+  padding: 0.75rem;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+@media (max-width: 600px) {
+  .login-box {
+    padding: 1.5rem 0.5rem 1.5rem 0.5rem;
+    max-width: 95vw;
+  }
+} 

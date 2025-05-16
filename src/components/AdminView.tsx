@@ -127,7 +127,7 @@ const AdminView: React.FC = () => {
                 top: `${Math.min(startCoords.y, currentCoords.y)}px`,
                 width: `${Math.abs(startCoords.x - currentCoords.x)}px`,
                 height: `${Math.abs(startCoords.y - currentCoords.y)}px`,
-                zIndex: 10,
+                zIndex: 10, // needed for overlaw
                 pointerEvents: 'none',
               }}
             />

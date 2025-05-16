@@ -81,7 +81,7 @@ const UserView: React.FC = () => {
             src={image}
             map={map}
             onClick={(area) => area.id && openCamera(parseInt(area.id, 10))}
-            width={800} // Match the width used in AdminView
+            width={800}
           />
         </div>
       ) : (
