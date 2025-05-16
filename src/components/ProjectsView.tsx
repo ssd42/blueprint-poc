@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './ProjectsView.css';
 
 
@@ -59,6 +60,7 @@ const ProjectsView: React.FC = () => {
     managerName: '',
     managerPhone: '',
   });
+  const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -74,6 +76,10 @@ const ProjectsView: React.FC = () => {
     setProjects([...projects, newProject]);
     setShowModal(false);
     setForm({ name: '', address: '', managerName: '', managerPhone: '' });
+  };
+
+  const handleRowClick = (projectId: number) => {
+    navigate(`/projects/${projectId}`);
   };
 
   return (
@@ -136,7 +142,11 @@ const ProjectsView: React.FC = () => {
         </thead>
         <tbody>
           {projects.map((p) => (
-            <tr key={p.id}>
+            <tr 
+              key={p.id} 
+              onClick={() => handleRowClick(p.id)}
+              className="clickable-row"
+            >
               <td>{p.name}</td>
               <td>{p.address}</td>
               <td>{p.managerName}</td>

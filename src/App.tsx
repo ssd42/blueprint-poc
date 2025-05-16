@@ -7,6 +7,7 @@ import AdminView from './components/AdminView';
 import UserView from './components/UserView';
 import LandingView from './components/LandingView';
 import ProjectsView from './components/ProjectsView';
+import ProjectDetailView from './components/ProjectDetailView';
 import Login from './components/Login';
 import favicon from './assets/favicon.png';
 import { FaUserShield, FaUser, FaClipboardList, FaSun, FaMoon, FaSignOutAlt } from 'react-icons/fa';
@@ -84,6 +85,7 @@ const MainApp: React.FC = () => {
           <Route path="/admin" element={<AdminView />} />
           <Route path="/user" element={<UserView />} />
           <Route path="/projects" element={<ProjectsView />} />
+          <Route path="/projects/:projectId" element={<ProjectDetailView />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </div>

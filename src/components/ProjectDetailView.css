@@ -1,0 +1,165 @@
+.project-detail {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 2.5rem 1rem 2.5rem 1rem;
+  margin: 0 auto;
+  animation: fadeIn 0.5s;
+  box-sizing: border-box;
+}
+
+.fade-in {
+  animation: fadeIn 0.5s;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: none; }
+}
+
+.project-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2.5rem;
+  position: relative;
+}
+
+.back-btn {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--primary);
+  font-size: 1.5rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.back-btn:hover {
+  background: var(--hover);
+}
+
+.project-title {
+  margin: 0 auto;
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--fg);
+  text-align: center;
+}
+
+.project-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  flex-grow: 1;
+  width: 100%;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.info-section {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(60, 60, 100, 0.07);
+  border: 1px solid var(--border);
+  padding: 2rem 1.5rem 1.5rem 1.5rem;
+  margin-bottom: 0;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.info-section h2 {
+  margin-top: 0;
+  margin-bottom: 1.25rem;
+  font-size: 1.25rem;
+  color: #3a59ff;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.info-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.info-item {
+  display: flex;
+  gap: 1.5rem;
+  align-items: baseline;
+}
+
+.info-item dt {
+  min-width: 120px;
+  color: #6b7280;
+  font-weight: 500;
+  font-size: 1rem;
+  opacity: 0.85;
+}
+
+.info-item dd {
+  margin: 0;
+  color: #222b45;
+  font-weight: 600;
+  font-size: 1.05rem;
+}
+
+.divider {
+  height: 1px;
+  background: var(--border);
+  margin: 0.5rem 0 0.5rem 0;
+  border-radius: 2px;
+  opacity: 0.5;
+  width: 100%;
+}
+
+.muted {
+  color: #8a8fa3;
+  font-size: 1rem;
+  margin-top: 0.5rem;
+}
+
+@media (max-width: 600px) {
+  .project-detail {
+    padding: 1.2rem 0.2rem 1.5rem 0.2rem;
+  }
+  .project-info {
+    max-width: 100%;
+  }
+  .info-section {
+    padding: 1.2rem 0.7rem 1rem 0.7rem;
+  }
+  .project-title {
+    font-size: 1.3rem;
+  }
+  .info-item dt {
+    min-width: 90px;
+    font-size: 0.98rem;
+  }
+  .info-item dd {
+    font-size: 0.98rem;
+  }
+}
+
+button {
+  background-color: var(--primary);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+}
+
+button:hover {
+  background-color: var(--primary);
+  opacity: 0.9;
+} 
