@@ -1,62 +1,39 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { FaArrowLeft } from 'react-icons/fa';
+import { fetchProjectById, Project } from '../services/projectService';
 import './ProjectDetailView.css';
-
-interface Project {
-  id: number;
-  name: string;
-  address: string;
-  managerName: string;
-  managerPhone: string;
-}
-
-// This would typically come from an API or database
-const sampleProjects: Project[] = [
-  {
-    id: 1,
-    name: "Downtown Office Renovation",
-    address: "123 Main St, Springfield, IL",
-    managerName: "Alice Johnson",
-    managerPhone: "555-123-4567",
-  },
-  {
-    id: 2,
-    name: "Riverside Mall Expansion",
-    address: "456 River Rd, Dayton, OH",
-    managerName: "Carlos Mendoza",
-    managerPhone: "555-234-5678",
-  },
-  {
-    id: 3,
-    name: "Greenfield Apartments",
-    address: "789 Elm St, Greenfield, MA",
-    managerName: "Samantha Lee",
-    managerPhone: "555-345-6789",
-  },
-  {
-    id: 4,
-    name: "Tech Park Development",
-    address: "321 Innovation Blvd, Austin, TX",
-    managerName: "David Chen",
-    managerPhone: "555-456-7890",
-  },
-  {
-    id: 5,
-    name: "Harborview Condos",
-    address: "987 Ocean Dr, Miami, FL",
-    managerName: "Lena Rodríguez",
-    managerPhone: "555-567-8901",
-  },
-];
 
 const ProjectDetailView: React.FC = () => {
   const { projectId } = useParams<{ projectId: string }>();
   const navigate = useNavigate();
-  
-  const project = sampleProjects.find(p => p.id === Number(projectId));
+  const [project, setProject] = useState<Project | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  if (!project) {
+  useEffect(() => {
+    const loadProject = async () => {
+      try {
+        if (!projectId) throw new Error('Invalid project ID');
+        const data = await fetchProjectById(projectId);
+        if (!data) throw new Error('Project not found');
+        setProject(data);
+      } catch (err) {
+        setError('Failed to fetch project');
+        console.error(err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadProject();
+  }, [projectId]);
+
+  if (isLoading) {
+    return <div className="project-detail fade-in">Loading...</div>;
+  }
+
+  if (error || !project) {
     return (
       <div className="project-detail fade-in">
         <header className="project-header">
@@ -105,4 +82,4 @@ const ProjectDetailView: React.FC = () => {
   );
 };
 
-export default ProjectDetailView; 
+export default ProjectDetailView;
