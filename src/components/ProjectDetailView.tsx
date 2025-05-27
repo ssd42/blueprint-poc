@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { FaArrowLeft } from 'react-icons/fa';
+import { FaArrowLeft, FaPlus } from 'react-icons/fa';
 import { fetchProjectById, Project } from '../services/projectService';
+import { Blueprint, getBlueprints, addBlueprint, updateBlueprintMappings, deleteBlueprint } from '../services/blueprintService';
+import BlueprintManager from './BlueprintManager';
 import './ProjectDetailView.css';
 
 const ProjectDetailView: React.FC = () => {
@@ -10,6 +12,7 @@ const ProjectDetailView: React.FC = () => {
   const [project, setProject] = useState<Project | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [blueprints, setBlueprints] = useState<Blueprint[]>([]);
 
   useEffect(() => {
     const loadProject = async () => {
@@ -18,6 +21,7 @@ const ProjectDetailView: React.FC = () => {
         const data = await fetchProjectById(projectId);
         if (!data) throw new Error('Project not found');
         setProject(data);
+        setBlueprints(getBlueprints(projectId));
       } catch (err) {
         setError('Failed to fetch project');
         console.error(err);
@@ -28,6 +32,26 @@ const ProjectDetailView: React.FC = () => {
 
     loadProject();
   }, [projectId]);
+
+  const handleAddBlueprint = () => {
+    if (!projectId) return;
+    const newBlueprint = addBlueprint(projectId);
+    setBlueprints([...blueprints, newBlueprint]);
+  };
+
+  const handleUpdateMappings = (blueprintId: string, mappings: Blueprint['mappings']) => {
+    if (!projectId) return;
+    updateBlueprintMappings(projectId, blueprintId, mappings);
+    setBlueprints(blueprints.map(bp => 
+      bp.id === blueprintId ? { ...bp, mappings } : bp
+    ));
+  };
+
+  const handleDeleteBlueprint = (blueprintId: string) => {
+    if (!projectId) return;
+    deleteBlueprint(projectId, blueprintId);
+    setBlueprints(blueprints.filter(bp => bp.id !== blueprintId));
+  };
 
   if (isLoading) {
     return <div className="project-detail fade-in">Loading...</div>;
@@ -74,8 +98,28 @@ const ProjectDetailView: React.FC = () => {
         </section>
         <div className="divider" />
         <section className="info-section">
-          <h2>Project Images</h2>
-          <p className="muted">Images will be displayed here in the future.</p>
+          <div className="blueprints-header">
+            <h2>Project Blueprints</h2>
+            <button className="add-blueprint-btn" onClick={handleAddBlueprint}>
+              <FaPlus /> Add Blueprint
+            </button>
+          </div>
+          <div className="blueprints-container">
+            {blueprints.map((blueprint) => (
+              projectId && (
+                <BlueprintManager
+                  key={blueprint.id}
+                  blueprint={blueprint}
+                  onUpdateMappings={(mappings) => handleUpdateMappings(blueprint.id, mappings)}
+                  onDelete={() => handleDeleteBlueprint(blueprint.id)}
+                  projectId={projectId}
+                />
+              )
+            ))}
+            {blueprints.length === 0 && (
+              <p className="muted">No blueprints added yet. Click the button above to add one.</p>
+            )}
+          </div>
         </section>
       </main>
     </div>

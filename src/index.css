@@ -288,8 +288,13 @@ button:focus-visible {
   margin-top: 20px;
 }
 .mapper-wrapper img {
-  pointer-events: none;
+  pointer-events: auto;
+  user-select: none;
+  -webkit-user-drag: none;
+  -webkit-touch-callout: none;
+  user-drag: none;
 }
+
 .non-draggable img {
   user-drag: none;
   -webkit-user-drag: none;

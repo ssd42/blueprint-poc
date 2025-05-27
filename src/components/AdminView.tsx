@@ -17,7 +17,6 @@ const AdminView: React.FC = () => {
   const [isDrawing, setIsDrawing] = useState(false);
   const [startCoords, setStartCoords] = useState<{ x: number; y: number } | null>(null);
   const [currentCoords, setCurrentCoords] = useState<{ x: number; y: number } | null>(null);
-  const [hoveredId, setHoveredId] = useState<string | null>(null);
   const [isImageLoaded, setIsImageLoaded] = useState(false);
 
   const handleImageSelection = useCallback(() => {
@@ -80,10 +79,7 @@ const AdminView: React.FC = () => {
       id: mapping.id.toString(),
       shape: mapping.shape,
       coords: mapping.coords,
-      preFillColor:
-        hoveredId === mapping.id.toString()
-          ? 'rgba(255, 0, 0, 0.15)' // lighter on hover
-          : 'rgba(255, 0, 0, 0.3)', // default
+      preFillColor: 'rgba(255, 0, 0, 0.3)',
       lineWidth: 2,
     })),
   };
@@ -116,7 +112,6 @@ const AdminView: React.FC = () => {
           onTouchEnd={handleEnd}
           aria-label="Blueprint with clickable mapping areas"
         >
-          {/* Live preview rectangle while drawing */}
           {isDrawing && startCoords && currentCoords && (
             <div
               style={{
@@ -127,7 +122,7 @@ const AdminView: React.FC = () => {
                 top: `${Math.min(startCoords.y, currentCoords.y)}px`,
                 width: `${Math.abs(startCoords.x - currentCoords.x)}px`,
                 height: `${Math.abs(startCoords.y - currentCoords.y)}px`,
-                zIndex: 10, // needed for overlaw
+                zIndex: 10,
                 pointerEvents: 'none',
               }}
             />
@@ -138,8 +133,6 @@ const AdminView: React.FC = () => {
             map={map}
             onClick={handleAreaClick}
             width={800}
-            onMouseEnter={(area) => setHoveredId(area.id ?? null)}
-            onMouseLeave={() => setHoveredId(null)}
           />
         </div>
       )}

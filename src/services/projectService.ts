@@ -150,3 +150,32 @@ export const fetchProjectById = async (id: string): Promise<Project | null> => {
     return null;
   }
 };
+
+/**
+ * Updates an existing project.
+ */
+export const updateProject = async (id: string, project: Project): Promise<Project> => {
+  try {
+    const projectUpdate: ProjectCreate = {
+      project_name: project.name,
+      location: project.address,
+      project_manager: {
+        name: project.managerName,
+        phone: project.managerPhone,
+      },
+    };
+
+    const response = await axios.put<ProjectRead>(`${API_BASE_URL}${API_ENDPOINT}${id}/`, projectUpdate);
+
+    return {
+      id: response.data.id,
+      name: response.data.project_name,
+      address: response.data.location,
+      managerName: response.data.project_manager.name,
+      managerPhone: response.data.project_manager.phone,
+    };
+  } catch (error) {
+    console.error(`Error updating project ${id}:`, error);
+    throw error;
+  }
+};
