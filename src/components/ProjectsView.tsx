@@ -58,7 +58,7 @@ const ProjectsView: React.FC = () => {
     }
   };
 
-  const handleRowClick = (projectId: number) => {
+  const handleRowClick = (projectId: string) => {
     navigate(`/projects/${projectId}`);
   };
 
@@ -131,7 +131,7 @@ const ProjectsView: React.FC = () => {
           {projects.map((p) => (
             <tr 
               key={p.id} 
-              onClick={() => handleRowClick(p.id)}
+              onClick={() => handleRowClick(p.id.toString())}
               className="clickable-row"
             >
               <td>{p.name}</td>

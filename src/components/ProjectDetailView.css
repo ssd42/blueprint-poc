@@ -297,4 +297,34 @@ button:hover {
   border: 2px solid #007bff;
   border-radius: 4px;
   width: 200px;
+}
+
+.error-message {
+  background-color: #fff3f3;
+  color: #dc3545;
+  padding: 0.75rem 1rem;
+  border-radius: 4px;
+  margin: 1rem 0;
+  border: 1px solid #ffcdd2;
+  font-size: 0.9rem;
+}
+
+.blueprint-preview {
+  margin: 1rem 0;
+  padding: 1rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.blueprint-preview h3 {
+  margin: 0 0 1rem 0;
+  color: #333;
+}
+
+.blueprint-preview img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
+  border: 1px solid #ddd;
 } 
