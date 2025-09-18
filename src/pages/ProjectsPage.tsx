@@ -1,59 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './ProjectsView.css';
+import { fetchProjects, createProject, Project } from '../services/projectService';
+import '../styles/pages/ProjectsView.css';
 
-
-
-interface Project {
-  id: number;
-  name: string;
-  address: string;
-  managerName: string;
-  managerPhone: string;
-}
-
-const sampleProjects: Project[] = [
-    {
-      id: 1,
-      name: "Downtown Office Renovation",
-      address: "123 Main St, Springfield, IL",
-      managerName: "Alice Johnson",
-      managerPhone: "555-123-4567",
-    },
-    {
-      id: 2,
-      name: "Riverside Mall Expansion",
-      address: "456 River Rd, Dayton, OH",
-      managerName: "Carlos Mendoza",
-      managerPhone: "555-234-5678",
-    },
-    {
-      id: 3,
-      name: "Greenfield Apartments",
-      address: "789 Elm St, Greenfield, MA",
-      managerName: "Samantha Lee",
-      managerPhone: "555-345-6789",
-    },
-    {
-      id: 4,
-      name: "Tech Park Development",
-      address: "321 Innovation Blvd, Austin, TX",
-      managerName: "David Chen",
-      managerPhone: "555-456-7890",
-    },
-    {
-      id: 5,
-      name: "Harborview Condos",
-      address: "987 Ocean Dr, Miami, FL",
-      managerName: "Lena Rodríguez",
-      managerPhone: "555-567-8901",
-    },
-  ];
-  
-
-const ProjectsView: React.FC = () => {
-  const [projects, setProjects] = useState<Project[]>(sampleProjects);
+const ProjectsPage: React.FC = () => {
+  const [projects, setProjects] = useState<Project[]>([]);
   const [showModal, setShowModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [form, setForm] = useState({
     name: '',
     address: '',
@@ -62,29 +16,57 @@ const ProjectsView: React.FC = () => {
   });
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const loadProjects = async () => {
+      try {
+        const data = await fetchProjects();
+        setProjects(data);
+      } catch (err) {
+        setError('Failed to load projects');
+        console.error(err);
+      }
+    };
+    loadProjects();
+  }, []);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const newProject: Project = {
-      id: Date.now(),
-      ...form,
-    };
-    setProjects([...projects, newProject]);
-    setShowModal(false);
-    setForm({ name: '', address: '', managerName: '', managerPhone: '' });
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const newProject = await createProject({
+        name: form.name,
+        address: form.address,
+        managerName: form.managerName,
+        managerPhone: form.managerPhone,
+        permits: [],
+      });
+      
+      setProjects([...projects, newProject]);
+      setShowModal(false);
+      setForm({ name: '', address: '', managerName: '', managerPhone: '' });
+    } catch (err) {
+      setError('Failed to create project');
+      console.error(err);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const handleRowClick = (projectId: number) => {
+  const handleRowClick = (projectId: string) => {
     navigate(`/projects/${projectId}`);
   };
 
   return (
     <div>
       <h1>Projects</h1>
+      {error && <div className="error-message">{error}</div>}
       <button onClick={() => setShowModal(true)}>+ New Project</button>
 
       {showModal && (
@@ -98,6 +80,7 @@ const ProjectsView: React.FC = () => {
                 value={form.name}
                 onChange={handleChange}
                 required
+                disabled={isLoading}
               />
               <input
                 name="address"
@@ -105,6 +88,7 @@ const ProjectsView: React.FC = () => {
                 value={form.address}
                 onChange={handleChange}
                 required
+                disabled={isLoading}
               />
               <input
                 name="managerName"
@@ -112,6 +96,7 @@ const ProjectsView: React.FC = () => {
                 value={form.managerName}
                 onChange={handleChange}
                 required
+                disabled={isLoading}
               />
               <input
                 name="managerPhone"
@@ -119,10 +104,13 @@ const ProjectsView: React.FC = () => {
                 value={form.managerPhone}
                 onChange={handleChange}
                 required
+                disabled={isLoading}
               />
               <div className="modal-actions">
-                <button type="submit">Create</button>
-                <button type="button" onClick={() => setShowModal(false)}>
+                <button type="submit" disabled={isLoading}>
+                  {isLoading ? 'Creating...' : 'Create'}
+                </button>
+                <button type="button" onClick={() => setShowModal(false)} disabled={isLoading}>
                   Cancel
                 </button>
               </div>
@@ -144,7 +132,7 @@ const ProjectsView: React.FC = () => {
           {projects.map((p) => (
             <tr 
               key={p.id} 
-              onClick={() => handleRowClick(p.id)}
+              onClick={() => handleRowClick(p.id.toString())}
               className="clickable-row"
             >
               <td>{p.name}</td>
@@ -159,4 +147,4 @@ const ProjectsView: React.FC = () => {
   );
 };
 
-export default ProjectsView;
+export default ProjectsPage;

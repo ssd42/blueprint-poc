@@ -1,0 +1,471 @@
+.project-detail {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  animation: fadeIn 0.5s;
+  box-sizing: border-box;
+}
+
+.fade-in {
+  animation: fadeIn 0.5s;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: none; }
+}
+
+.project-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.back-btn {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  margin-right: 1rem;
+  color: #666;
+  transition: color 0.2s;
+}
+
+.back-btn:hover {
+  color: #333;
+}
+
+.project-title-container {
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+.project-title-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.name-edit-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.name-edit-input {
+  font-size: 2rem;
+  padding: 0.25rem 0.5rem;
+  border: 2px solid #007bff;
+  border-radius: 4px;
+  width: 100%;
+  max-width: 400px;
+}
+
+.icon-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  color: #666;
+  transition: color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-btn:hover {
+  color: #333;
+}
+
+.project-info {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+}
+
+.info-section {
+  margin-bottom: 2rem;
+}
+
+.info-section h2 {
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.info-item {
+  padding: 1rem;
+  background: #f8f9fa;
+  border-radius: 4px;
+}
+
+.info-item dt {
+  font-weight: bold;
+  color: #666;
+  margin-bottom: 0.5rem;
+}
+
+.info-item dd {
+  margin: 0;
+  color: #333;
+}
+
+.divider {
+  height: 1px;
+  background: #eee;
+  margin: 2rem 0;
+}
+
+.muted {
+  color: #666;
+  font-style: italic;
+}
+
+/* Blueprint Management Styles */
+.blueprints-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.add-blueprint-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.add-blueprint-btn:hover {
+  background-color: #0056b3;
+}
+
+.blueprints-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.blueprint-manager {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.blueprint-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.blueprint-header h3 {
+  margin: 0;
+  color: #333;
+}
+
+.blueprint-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.edit-btn,
+.delete-btn {
+  background: none;
+  border: none;
+  padding: 0.5rem;
+  cursor: pointer;
+  color: #666;
+  transition: color 0.2s;
+}
+
+.edit-btn:hover,
+.delete-btn:hover {
+  color: #333;
+}
+
+.edit-btn.active {
+  color: #007bff;
+}
+
+.undo-btn {
+  margin-bottom: 1rem;
+  padding: 0.5rem 1rem;
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.undo-btn:hover {
+  background-color: #5a6268;
+}
+
+.undo-btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.mapper-wrapper {
+  width: 100%;
+  overflow: hidden;
+  border-radius: 4px;
+  background: white;
+}
+
+.mapper-wrapper img {
+  pointer-events: auto;
+  user-select: none;
+  -webkit-user-drag: none;
+  -webkit-touch-callout: none;
+  user-drag: none;
+}
+
+@media (max-width: 600px) {
+  .project-detail {
+    padding: 1.2rem 0.2rem 1.5rem 0.2rem;
+  }
+  .project-info {
+    max-width: 100%;
+  }
+  .info-section {
+    padding: 1.2rem 0.7rem 1rem 0.7rem;
+  }
+  .project-title {
+    font-size: 1.3rem;
+  }
+  .info-item dt {
+    min-width: 90px;
+    font-size: 0.98rem;
+  }
+  .info-item dd {
+    font-size: 0.98rem;
+  }
+}
+
+button {
+  background-color: var(--primary);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+}
+
+button:hover {
+  background-color: var(--primary);
+  opacity: 0.9;
+}
+
+.blueprint-title-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.blueprint-title-wrapper h3 {
+  margin: 0;
+  font-size: 1.2rem;
+  color: #333;
+}
+
+.blueprint-title-wrapper .name-edit-input {
+  font-size: 1.2rem;
+  padding: 0.25rem 0.5rem;
+  border: 2px solid #007bff;
+  border-radius: 4px;
+  width: 200px;
+}
+
+.error-message {
+  background-color: #fff3f3;
+  color: #dc3545;
+  padding: 0.75rem 1rem;
+  border-radius: 4px;
+  margin: 1rem 0;
+  border: 1px solid #ffcdd2;
+  font-size: 0.9rem;
+}
+
+.blueprint-preview {
+  margin: 1rem 0;
+  padding: 1rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.blueprint-preview h3 {
+  margin: 0 0 1rem 0;
+  color: #333;
+}
+
+.blueprint-preview img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+}
+
+/* Permits Table Styles */
+.permits-container {
+  margin-top: 1rem;
+}
+
+.permits-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.permits-table thead {
+  background-color: #f8f9fa;
+  border-bottom: 2px solid #e9ecef;
+}
+
+.permits-table th {
+  padding: 1rem;
+  text-align: left;
+  font-weight: 600;
+  color: #495057;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.permits-table td {
+  padding: 1rem;
+  border-bottom: 1px solid #e9ecef;
+  vertical-align: top;
+  font-size: 0.9rem;
+}
+
+.permits-table tbody tr:hover {
+  background-color: #f8f9fa;
+}
+
+.permits-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.permit-id {
+  font-family: 'Courier New', monospace;
+  font-size: 0.8rem;
+  color: #6c757d;
+  word-break: break-all;
+  max-width: 200px;
+}
+
+.permit-image-link {
+  color: #007bff;
+  text-decoration: none;
+  font-weight: 500;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  display: inline-block;
+  background: none;
+  border: 1px solid #007bff;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.permit-image-link:hover {
+  background-color: #e3f2fd;
+  color: #0056b3;
+  text-decoration: none;
+  border-color: #0056b3;
+}
+
+.muted {
+  color: #6c757d;
+  font-style: italic;
+}
+
+/* Responsive table */
+@media (max-width: 768px) {
+  .permits-table {
+    font-size: 0.8rem;
+  }
+  
+  .permits-table th,
+  .permits-table td {
+    padding: 0.5rem;
+  }
+  
+  .permit-id {
+    max-width: 150px;
+  }
+}
+
+@media (max-width: 600px) {
+  .permits-table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+  
+  .permits-table thead,
+  .permits-table tbody,
+  .permits-table th,
+  .permits-table td,
+  .permits-table tr {
+    display: block;
+  }
+  
+  .permits-table thead tr {
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+  }
+  
+  .permits-table tr {
+    border: 1px solid #ccc;
+    margin-bottom: 0.5rem;
+    padding: 0.5rem;
+    border-radius: 4px;
+  }
+  
+  .permits-table td {
+    border: none;
+    position: relative;
+    padding-left: 50%;
+    white-space: normal;
+  }
+  
+  .permits-table td:before {
+    content: attr(data-label) ": ";
+    position: absolute;
+    left: 6px;
+    width: 45%;
+    padding-right: 10px;
+    white-space: nowrap;
+    font-weight: bold;
+  }
+} 

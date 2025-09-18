@@ -1,8 +1,8 @@
 // components/LandingView.tsx
 import React from 'react';
-import { useAuth } from './AuthContext';
+import { useAuth } from '../contexts/AuthContext';
 
-const LandingView: React.FC = () => {
+const LandingPage: React.FC = () => {
   const { username } = useAuth();
   return (
     <div>
@@ -12,4 +12,4 @@ const LandingView: React.FC = () => {
   );
 };
 
-export default LandingView;
+export default LandingPage;

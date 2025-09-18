@@ -25,6 +25,10 @@ body.dark {
   --sidebar-button-hover: #444;
 }
 
+* {
+  box-sizing: border-box;
+}
+
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -42,6 +46,20 @@ body {
   background-color: var(--bg);
   color: var(--fg);
   transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Default theme - light mode */
+body:not(.light):not(.dark) {
+  --bg: #FAFAFA;
+  --fg: #213547;
+  --primary: #3a59ff;
+  --hover: #f0f0f0;
+  --border: #ccc;
+  --button-bg: #f9f9f9;
+  --sidebar-bg: #f0f0f0;
+  --sidebar-button-bg: #ffffff;
+  --sidebar-button-fg: #213547;
+  --sidebar-button-hover: #e0e0e0;
 }
 
 a {
@@ -229,6 +247,22 @@ button:focus-visible {
   transform: scale(1.1);
 }
 
+.logout-button {
+  background-color: transparent;
+  border: none;
+  color: var(--fg);
+  font-size: 1.5rem;
+  padding: 0.5rem;
+  align-self: center;
+  cursor: pointer;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.logout-button:hover {
+  color: var(--primary);
+  transform: scale(1.1);
+}
+
 .main-content {
   flex-grow: 1;
   height: 100vh;
@@ -288,8 +322,13 @@ button:focus-visible {
   margin-top: 20px;
 }
 .mapper-wrapper img {
-  pointer-events: none;
+  pointer-events: auto;
+  user-select: none;
+  -webkit-user-drag: none;
+  -webkit-touch-callout: none;
+  user-drag: none;
 }
+
 .non-draggable img {
   user-drag: none;
   -webkit-user-drag: none;

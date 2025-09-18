@@ -1,86 +1,19 @@
-import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
-import { AppProvider } from './components/AppContext';
-import { ThemeProvider, useTheme } from './components/ThemeContext';
-import { AuthProvider, useAuth } from './components/AuthContext';
-import AdminView from './components/AdminView';
-import UserView from './components/UserView';
-import LandingView from './components/LandingView';
-import ProjectsView from './components/ProjectsView';
-import ProjectDetailView from './components/ProjectDetailView';
-import Login from './components/Login';
-import favicon from './assets/favicon.png';
-import { FaAngleLeft, FaAngleRight, FaUserShield, FaUser, FaClipboardList, FaSun, FaMoon, FaSignOutAlt } from 'react-icons/fa';
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { AppProvider } from './contexts/AppContext';
+import { ThemeProvider } from './contexts/ThemeContext';
+import { AuthProvider, useAuth } from './contexts/AuthContext';
+import AdminPage from './pages/AdminPage';
+import UserPage from './pages/UserPage';
+import LandingPage from './pages/LandingPage';
+import ProjectsPage from './pages/ProjectsPage';
+import ProjectDetailPage from './pages/ProjectDetailPage';
+import LoginPage from './pages/LoginPage';
+import Sidebar from './components/common/Sidebar';
+import './styles/globals/App.css';
 
 
 
-const Sidebar: React.FC = () => {
-  const { theme, toggleTheme } = useTheme();
-  const { logout } = useAuth();
-  const navigate = useNavigate();
-  const location = useLocation();
-  const [isCollapsed, setIsCollapsed] = useState(false);
-
-  const currentPath = location.pathname;
-
-  return (
-    <div className={`sidebar ${isCollapsed ? 'collapsed' : ''}`}>
-      <button 
-        className="collapse-button"
-        onClick={() => setIsCollapsed(!isCollapsed)}
-        title={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
-      >
-        {isCollapsed ? <FaAngleRight /> : <FaAngleLeft />}
-      </button>
-      <img
-        src={favicon}
-        alt="Landing"
-        className="favicon"
-        onClick={() => navigate('/')}
-      />
-      <nav className="sidebar-nav">
-        <button
-          onClick={() => navigate('/admin')}
-          className={currentPath === '/admin' ? 'active' : ''}
-        >
-          <FaUserShield />
-          <span>Admin View</span>
-        </button>
-        <button
-          onClick={() => navigate('/user')}
-          className={currentPath === '/user' ? 'active' : ''}
-        >
-          <FaUser />
-          <span>User View</span>
-        </button>
-        <button
-          onClick={() => navigate('/projects')}
-          className={currentPath === '/projects' ? 'active' : ''}
-        >
-          <FaClipboardList />
-          <span>Projects</span>
-        </button>
-      </nav>
-      <div className="spacer" />
-      <button
-        onClick={toggleTheme}
-        className="theme-toggle"
-        title={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
-        aria-label="Toggle theme"
-      >
-        {theme === 'light' ? <FaMoon /> : <FaSun />}
-      </button>
-      <button
-        onClick={logout}
-        className="logout-button"
-        title="Logout"
-        aria-label="Logout"
-      >
-        <FaSignOutAlt />
-      </button>
-    </div>
-  );
-};
 
 
 const MainApp: React.FC = () => {
@@ -89,11 +22,11 @@ const MainApp: React.FC = () => {
       <Sidebar />
       <div className="main-content">
         <Routes>
-          <Route path="/" element={<LandingView />} />
-          <Route path="/admin" element={<AdminView />} />
-          <Route path="/user" element={<UserView />} />
-          <Route path="/projects" element={<ProjectsView />} />
-          <Route path="/projects/:projectId" element={<ProjectDetailView />} />
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/admin" element={<AdminPage />} />
+          <Route path="/user" element={<UserPage />} />
+          <Route path="/projects" element={<ProjectsPage />} />
+          <Route path="/projects/:projectId" element={<ProjectDetailPage />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </div>
@@ -140,7 +73,7 @@ const LoginRedirect: React.FC = () => {
   if (isAuthenticated) {
     return <Navigate to={location.state?.from?.pathname || '/'} replace />;
   }
-  return <Login />;
+  return <LoginPage />;
 };
 
 export default App;
