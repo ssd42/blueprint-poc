@@ -3,16 +3,19 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { FaArrowLeft, FaPlus } from 'react-icons/fa';
 import { fetchProjectById, Project } from '../services/projectService';
 import { Blueprint, getBlueprints, addBlueprint, updateBlueprintMappings, deleteBlueprint } from '../services/blueprintService';
-import BlueprintManager from './BlueprintManager';
-import './ProjectDetailView.css';
+import BlueprintManager from '../components/projects/BlueprintManager';
+import ImageModal from '../components/common/ImageModal';
+import '../styles/pages/ProjectDetailView.css';
 
-const ProjectDetailView: React.FC = () => {
+const ProjectDetailPage: React.FC = () => {
   const { projectId } = useParams<{ projectId: string }>();
   const navigate = useNavigate();
   const [project, setProject] = useState<Project | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [blueprints, setBlueprints] = useState<Blueprint[]>([]);
+  const [modalImageUrl, setModalImageUrl] = useState<string | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     const loadProject = async () => {
@@ -21,7 +24,8 @@ const ProjectDetailView: React.FC = () => {
         const data = await fetchProjectById(projectId);
         if (!data) throw new Error('Project not found');
         setProject(data);
-        setBlueprints(getBlueprints(projectId));
+        const blueprintData = await getBlueprints(projectId);
+        setBlueprints(blueprintData);
       } catch (err) {
         setError('Failed to fetch project');
         console.error(err);
@@ -51,6 +55,16 @@ const ProjectDetailView: React.FC = () => {
     if (!projectId) return;
     deleteBlueprint(projectId, blueprintId);
     setBlueprints(blueprints.filter(bp => bp.id !== blueprintId));
+  };
+
+  const handleOpenImageModal = (imageUrl: string) => {
+    setModalImageUrl(imageUrl);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseImageModal = () => {
+    setIsModalOpen(false);
+    setModalImageUrl(null);
   };
 
   if (isLoading) {
@@ -121,9 +135,61 @@ const ProjectDetailView: React.FC = () => {
             )}
           </div>
         </section>
+        <div className="divider" />
+        <section className="info-section">
+          <h2>Project Permits</h2>
+          <div className="permits-container">
+            {project.permits && project.permits.length > 0 ? (
+              <table className="permits-table">
+                <thead>
+                  <tr>
+                    <th>Permit ID</th>
+                    <th>Issued Date</th>
+                    <th>Expires Date</th>
+                    <th>Image</th>
+                    <th>Created</th>
+                    <th>Last Updated</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {project.permits.map((permit) => (
+                    <tr key={permit.id}>
+                      <td className="permit-id">{permit.id}</td>
+                      <td>{new Date(permit.issued_at).toLocaleDateString()}</td>
+                      <td>{new Date(permit.expires_at).toLocaleDateString()}</td>
+                      <td>
+                        {permit.image_url ? (
+                          <button 
+                            onClick={() => handleOpenImageModal(permit.image_url)}
+                            className="permit-image-link"
+                          >
+                            View Image
+                          </button>
+                        ) : (
+                          <span className="muted">No image</span>
+                        )}
+                      </td>
+                      <td>{new Date(permit.created_at).toLocaleDateString()}</td>
+                      <td>{new Date(permit.last_updated).toLocaleDateString()}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            ) : (
+              <p className="muted">No permits found for this project.</p>
+            )}
+          </div>
+        </section>
       </main>
+      
+      <ImageModal
+        isOpen={isModalOpen}
+        onClose={handleCloseImageModal}
+        imageUrl={modalImageUrl || ''}
+        title="Permit Image"
+      />
     </div>
   );
 };
 
-export default ProjectDetailView;
+export default ProjectDetailPage;

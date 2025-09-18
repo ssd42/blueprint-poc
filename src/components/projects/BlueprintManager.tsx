@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import ImageMapper from 'react-img-mapper';
 import { FaEdit, FaTimes, FaCheck } from 'react-icons/fa';
-import { updateBlueprintName } from '../services/blueprintService';
+import { updateBlueprintName } from '../../services/blueprintService';
 
 type Mapping = {
   id: number;

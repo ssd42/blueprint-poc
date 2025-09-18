@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { fetchProjects, createProject, Project } from '../services/projectService';
-import './ProjectsView.css';
+import '../styles/pages/ProjectsView.css';
 
-const ProjectsView: React.FC = () => {
+const ProjectsPage: React.FC = () => {
   const [projects, setProjects] = useState<Project[]>([]);
   const [showModal, setShowModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -45,6 +45,7 @@ const ProjectsView: React.FC = () => {
         address: form.address,
         managerName: form.managerName,
         managerPhone: form.managerPhone,
+        permits: [],
       });
       
       setProjects([...projects, newProject]);
@@ -146,4 +147,4 @@ const ProjectsView: React.FC = () => {
   );
 };
 
-export default ProjectsView;
+export default ProjectsPage;

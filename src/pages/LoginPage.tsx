@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { useAuth } from './AuthContext';
-import '../styles/Login.css';
+import { useAuth } from '../contexts/AuthContext';
+import '../styles/pages/Login.css';
 import favicon from '../assets/favicon.png';
 
-const Login: React.FC = () => {
+const LoginPage: React.FC = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -57,4 +57,4 @@ const Login: React.FC = () => {
   );
 };
 
-export default Login; 
+export default LoginPage; 

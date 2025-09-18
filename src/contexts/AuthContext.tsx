@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { VALID_USERNAME, VALID_PASSWORD, SESSION_KEY, USERNAME_KEY } from '../constants/auth';
 
 interface AuthContextType {
   isAuthenticated: boolean;
@@ -8,11 +9,6 @@ interface AuthContextType {
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
-
-const VALID_USERNAME = 'ronald';
-const VALID_PASSWORD = 'new_project';
-const SESSION_KEY = 'isAuthenticated';
-const USERNAME_KEY = 'username';
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {

@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { useAppContext } from './AppContext';
+import { useAppContext } from '../contexts/AppContext';
 import blueprint1 from '../assets/blueprint1.png';
 import ImageMapper from 'react-img-mapper';
 
@@ -12,7 +12,7 @@ type Mapping = {
 
 type PointerEvent = React.TouchEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>;
 
-const AdminView: React.FC = () => {
+const AdminPage: React.FC = () => {
   const { image, setImage, mappings, setMappings } = useAppContext();
   const [isDrawing, setIsDrawing] = useState(false);
   const [startCoords, setStartCoords] = useState<{ x: number; y: number } | null>(null);
@@ -140,4 +140,4 @@ const AdminView: React.FC = () => {
   );
 };
 
-export default AdminView;
+export default AdminPage;

@@ -1,8 +1,8 @@
 import React, { useRef, useState } from 'react';
-import { useAppContext } from './AppContext';
+import { useAppContext } from '../contexts/AppContext';
 import ImageMapper from 'react-img-mapper';
 
-const UserView: React.FC = () => {
+const UserPage: React.FC = () => {
   const { image, mappings, associations, setAssociations } = useAppContext();
   const videoRef = useRef<HTMLVideoElement>(null);
   const [cameraOpen, setCameraOpen] = useState(false);
@@ -110,4 +110,4 @@ const UserView: React.FC = () => {
   );
 };
 
-export default UserView;
+export default UserPage;

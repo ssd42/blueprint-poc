@@ -327,4 +327,145 @@ button:hover {
   height: auto;
   border-radius: 4px;
   border: 1px solid #ddd;
+}
+
+/* Permits Table Styles */
+.permits-container {
+  margin-top: 1rem;
+}
+
+.permits-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.permits-table thead {
+  background-color: #f8f9fa;
+  border-bottom: 2px solid #e9ecef;
+}
+
+.permits-table th {
+  padding: 1rem;
+  text-align: left;
+  font-weight: 600;
+  color: #495057;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.permits-table td {
+  padding: 1rem;
+  border-bottom: 1px solid #e9ecef;
+  vertical-align: top;
+  font-size: 0.9rem;
+}
+
+.permits-table tbody tr:hover {
+  background-color: #f8f9fa;
+}
+
+.permits-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.permit-id {
+  font-family: 'Courier New', monospace;
+  font-size: 0.8rem;
+  color: #6c757d;
+  word-break: break-all;
+  max-width: 200px;
+}
+
+.permit-image-link {
+  color: #007bff;
+  text-decoration: none;
+  font-weight: 500;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  display: inline-block;
+  background: none;
+  border: 1px solid #007bff;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.permit-image-link:hover {
+  background-color: #e3f2fd;
+  color: #0056b3;
+  text-decoration: none;
+  border-color: #0056b3;
+}
+
+.muted {
+  color: #6c757d;
+  font-style: italic;
+}
+
+/* Responsive table */
+@media (max-width: 768px) {
+  .permits-table {
+    font-size: 0.8rem;
+  }
+  
+  .permits-table th,
+  .permits-table td {
+    padding: 0.5rem;
+  }
+  
+  .permit-id {
+    max-width: 150px;
+  }
+}
+
+@media (max-width: 600px) {
+  .permits-table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+  
+  .permits-table thead,
+  .permits-table tbody,
+  .permits-table th,
+  .permits-table td,
+  .permits-table tr {
+    display: block;
+  }
+  
+  .permits-table thead tr {
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+  }
+  
+  .permits-table tr {
+    border: 1px solid #ccc;
+    margin-bottom: 0.5rem;
+    padding: 0.5rem;
+    border-radius: 4px;
+  }
+  
+  .permits-table td {
+    border: none;
+    position: relative;
+    padding-left: 50%;
+    white-space: normal;
+  }
+  
+  .permits-table td:before {
+    content: attr(data-label) ": ";
+    position: absolute;
+    left: 6px;
+    width: 45%;
+    padding-right: 10px;
+    white-space: nowrap;
+    font-weight: bold;
+  }
 } 

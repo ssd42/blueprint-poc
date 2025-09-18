@@ -5,7 +5,7 @@ import blueprint1 from '../assets/blueprint1.png';
 const API_BASE_URL = 'http://127.0.0.1:8000';
 const API_ENDPOINTS = {
   UPLOAD_IMAGE: '/v1/images',
-  GET_PROJECT_IMAGES: (projectId: string) => `/projects/${projectId}/images`
+  GET_PROJECT_IMAGES: (projectId: string) => `/v1/projects/${projectId}/images`
 };
 
 export type Mapping = {
@@ -41,8 +41,32 @@ export const addBlueprint = (projectId: string): Blueprint => {
   return newBlueprint;
 };
 
-export const getBlueprints = (projectId: string): Blueprint[] => {
-  return blueprints[projectId] || [];
+interface BlueprintApiResponse {
+  id: string;
+  project_id: string;
+  type: string;
+  image_url: string;
+  created_at: string;
+  last_updated: string;
+}
+
+export const getBlueprints = async (projectId: string): Promise<Blueprint[]> => {
+  try {
+    const response = await fetch(`${API_BASE_URL}${API_ENDPOINTS.GET_PROJECT_IMAGES(projectId)}?image_type=blueprint`);
+    if (!response.ok) {
+      throw new Error('Failed to fetch blueprints');
+    }
+    const data = await response.json();
+    return data.map((image: BlueprintApiResponse) => ({
+      id: image.id,
+      name: 'Unnamed Blueprint', // Since the API doesn't provide a name, we'll use a default
+      image: image.image_url,
+      mappings: [], // Since the API doesn't provide mappings, we'll initialize as empty
+    }));
+  } catch (error) {
+    console.error('Error fetching blueprints:', error);
+    return [];
+  }
 };
 
 export const updateBlueprintMappings = (
